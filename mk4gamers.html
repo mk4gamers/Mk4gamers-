@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MK4GAMERS - Jogos Digitais</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    const jogos = [
+      { nome: 'FIFA 24', preco: 'R$ 79,90', plataforma: 'PS5', imagem: 'https://upload.wikimedia.org/wikipedia/en/9/99/FIFA_24_cover.jpg' },
+      { nome: 'GTA V', preco: 'R$ 49,90', plataforma: 'PS4', imagem: 'https://upload.wikimedia.org/wikipedia/en/a/a5/Grand_Theft_Auto_V.png' },
+      { nome: 'Gran Turismo 7', preco: 'R$ 59,90', plataforma: 'PS5', imagem: 'https://upload.wikimedia.org/wikipedia/en/e/e1/Gran_Turismo_7.jpg' },
+      { nome: 'God of War Ragnarok', preco: 'R$ 99,90', plataforma: 'PS5', imagem: 'https://upload.wikimedia.org/wikipedia/en/f/fc/God_of_War_Ragnar%C3%B6k_cover.jpg' },
+      { nome: 'The Last of Us Part II', preco: 'R$ 69,90', plataforma: 'PS4', imagem: 'https://upload.wikimedia.org/wikipedia/en/4/4f/The_Last_of_Us_Part_II_cover_art.jpg' },
+      { nome: 'Horizon Forbidden West', preco: 'R$ 89,90', plataforma: 'PS5', imagem: 'https://upload.wikimedia.org/wikipedia/en/2/20/Horizon_Forbidden_West_cover_art.jpg' },
+      { nome: 'Icarnium', preco: 'R$ 74,90', plataforma: 'PS4', imagem: 'https://via.placeholder.com/300x400?text=Icarnium' },
+      { nome: 'Forza Horizon 5', preco: 'R$ 89,90', plataforma: 'Xbox', imagem: 'https://upload.wikimedia.org/wikipedia/en/7/7b/Forza_Horizon_5_cover_art.jpg' },
+      { nome: 'Halo Infinite', preco: 'R$ 69,90', plataforma: 'Xbox', imagem: 'https://upload.wikimedia.org/wikipedia/en/e/e4/Halo_Infinite.png' },
+      { nome: 'Cyberpunk 2077', preco: 'R$ 99,90', plataforma: 'PC', imagem: 'https://upload.wikimedia.org/wikipedia/en/9/9f/Cyberpunk_2077_box_art.jpg' },
+      { nome: 'The Witcher 3', preco: 'R$ 39,90', plataforma: 'PC', imagem: 'https://upload.wikimedia.org/wikipedia/en/0/0c/Witcher_3_cover_art.jpg' }
+    ];
+    const carrinho = [];
+
+    function renderizarJogos(plataforma = 'Todos') {
+      const container = document.getElementById('lista-jogos');
+      container.innerHTML = '';
+      jogos.filter(j => plataforma === 'Todos' || j.plataforma === plataforma).forEach(jogo => {
+        const div = document.createElement('div');
+        div.className = 'bg-gray-800 p-4 rounded-lg shadow-md';
+        div.innerHTML = `
+          <img src="${jogo.imagem}" alt="${jogo.nome}" class="mb-4 rounded" />
+          <h4 class="text-xl font-bold">${jogo.nome}</h4>
+          <p class="text-green-400">${jogo.preco}</p>
+          <button onclick="adicionarAoCarrinho('${jogo.nome}')" class="mt-2 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Adicionar</button>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function adicionarAoCarrinho(jogo) {
+      carrinho.push(jogo);
+      atualizarCarrinho();
+    }
+
+    function atualizarCarrinho() {
+      const lista = document.getElementById('lista-carrinho');
+      lista.innerHTML = '';
+      carrinho.forEach(jogo => {
+        const item = document.createElement('li');
+        item.textContent = jogo;
+        lista.appendChild(item);
+      });
+    }
+
+    function finalizarCompra() {
+      if (carrinho.length === 0) {
+        alert('Seu carrinho está vazio!');
+        return;
+      }
+      const mensagem = `Olá! Gostaria de comprar os seguintes jogos: ${carrinho.join(', ')}`;
+      const url = `https://wa.me/554891631378?text=${encodeURIComponent(mensagem)}`;
+      window.open(url, '_blank');
+    }
+
+    window.onload = () => renderizarJogos();
+  </script>
+</head>
+<body class="bg-gray-900 text-white font-sans">
+  <header class="bg-gray-800 p-4 shadow-md">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <h1 class="text-2xl font-bold text-green-400">MK4GAMERS</h1>
+      <nav class="space-x-4">
+        <a href="#catalogo" class="hover:text-green-400">Catálogo</a>
+        <a href="#sobre" class="hover:text-green-400">Sobre</a>
+        <a href="#contato" class="hover:text-green-400">Contato</a>
+        <a href="#carrinho" class="hover:text-green-400">Carrinho</a>
+      </nav>
+    </div>
+  </header>
+  <section class="bg-gradient-to-r from-green-500 to-blue-600 p-10 text-center">
+    <h2 class="text-3xl font-bold mb-2">Bem-vindo à MK4GAMERS</h2>
+    <p class="text-lg">Sua loja de jogos digitais com os melhores preços e atendimento rápido</p>
+  </section>
+  <section id="catalogo" class="max-w-6xl mx-auto py-10">
+    <h3 class="text-2xl font-semibold mb-6">Catálogo de Jogos</h3>
+    <div class="mb-6">
+      <label class="block mb-2">Filtrar por plataforma:</label>
+      <select onchange="renderizarJogos(this.value)" class="bg-gray-800 text-white px-4 py-2 rounded">
+        <option value="Todos">Todos</option>
+        <option value="PS4">PS4</option>
+        <option value="PS5">PS5</option>
+        <option value="Xbox">Xbox</option>
+        <option value="PC">PC</option>
+      </select>
+    </div>
+    <div id="lista-jogos" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"></div>
+  </section>
+  <section id="carrinho" class="max-w-4xl mx-auto py-10">
+    <h3 class="text-2xl font-semibold mb-4">Seu Carrinho</h3>
+    <ul id="lista-carrinho" class="mb-4 list-disc list-inside"></ul>
+    <button onclick="finalizarCompra()" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded">Finalizar Compra via WhatsApp</button>
+  </section>
+  <section id="sobre" class="bg-gray-800 py-10">
+    <div class="max-w-4xl mx-auto text-center">
+      <h3 class="text-2xl font-semibold mb-4">Sobre a MK4GAMERS</h3>
+      <p>Somos uma loja digital especializada na venda de jogos para PS4, PS5, Xbox e PC. Trabalhamos com agilidade, preços justos e total segurança para garantir a melhor experiência para nossos clientes.</p>
+    </div>
+  </section>
+  <section id="contato" class="max-w-4xl mx-auto py-10 text-center">
+    <h3 class="text-2xl font-semibold mb-4">Fale Conosco</h3>
+    <p>Entre em contato pelo WhatsApp: <a href="https://wa.me/554891631378" class="text-green-400 underline">Clique aqui</a></p>
+  </section>
+  <footer class="bg-gray-800 p-4 text-center text-sm">
+    &copy; 2025 MK4GAMERS. Todos os direitos reservados.
+  </footer>
+</body>
+</html>
